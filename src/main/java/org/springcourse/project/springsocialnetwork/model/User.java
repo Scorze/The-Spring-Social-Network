@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -68,6 +69,10 @@ public class User {
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
+    @Transient
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private String passwordConfirm;
+
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -114,6 +119,14 @@ public class User {
 
     public void setRole(UserRole userRole) {
         this.role = userRole;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     @Override

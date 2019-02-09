@@ -61,4 +61,13 @@ public class UserServiceImpl implements UserService {
         repository.delete(existingUser);
     }
 
+    @Override
+    public User findByName(String name) {
+        Optional<User> existing = repository.findByName(name);
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+        return null;
+    }
+
 }
