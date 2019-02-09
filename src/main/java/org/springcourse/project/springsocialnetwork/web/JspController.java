@@ -24,9 +24,13 @@ public class JspController {
     @Autowired
     private SecurityService securityService;
 
+
     @GetMapping(value = {"/", "/index"})
     public String welcome(Model model) {
-        return "index";
+        if (securityService.getLoggedInName() != null) {
+            return "index";
+        }
+        return "login";
     }
 
     @GetMapping(value = "/login")
