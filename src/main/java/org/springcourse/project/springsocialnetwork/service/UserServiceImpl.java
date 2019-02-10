@@ -3,9 +3,11 @@ package org.springcourse.project.springsocialnetwork.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springcourse.project.springsocialnetwork.dao.FriendRequestRepository;
 import org.springcourse.project.springsocialnetwork.dao.UserRepository;
 import org.springcourse.project.springsocialnetwork.exception.DuplicateUserException;
 import org.springcourse.project.springsocialnetwork.exception.EntityNotFoundException;
+import org.springcourse.project.springsocialnetwork.model.FriendRequest;
 import org.springcourse.project.springsocialnetwork.model.User;
 import org.springcourse.project.springsocialnetwork.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
+    
+    @Autowired
+    private FriendRequestRepository friendRequestRepo;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -75,10 +80,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findByNonFriends(String name) {
-		List<User> allUsers = repository.findAll();
+		List<User> allUsers = repository.findByNameContaining(name);
 		String loggedUserName = securityService.getLoggedInName();
 		User loggedUser = repository.findByName(loggedUserName).get();
 		List<User> loggedUserFriends = loggedUser.getFriends();
+		List<FriendRequest> allSendFriendRequest = friendRequestRepo.findByRequestFrom(loggedUser);
+		for (FriendRequest fr : allSendFriendRequest) {
+			allUsers.remove(fr.getRequestTo());
+		}
 		allUsers.removeAll(loggedUserFriends);
 		allUsers.remove(loggedUser);
 		return allUsers;

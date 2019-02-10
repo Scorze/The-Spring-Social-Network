@@ -1,14 +1,15 @@
 package org.springcourse.project.springsocialnetwork.web;
 
+import java.util.Map;
+
 import org.springcourse.project.springsocialnetwork.model.Post;
 import org.springcourse.project.springsocialnetwork.model.User;
+import org.springcourse.project.springsocialnetwork.service.FriendRequestService;
 import org.springcourse.project.springsocialnetwork.service.PostService;
 import org.springcourse.project.springsocialnetwork.service.SecurityService;
 import org.springcourse.project.springsocialnetwork.service.UserService;
 import org.springcourse.project.springsocialnetwork.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +33,9 @@ public class JspController {
 
     @Autowired
     private PostService service;
-
+    
+    @Autowired
+    private FriendRequestService friendRequestSvc;
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
@@ -97,5 +100,10 @@ public class JspController {
     public String searchFriends(@RequestParam("searchName") String name) {
     	return "redirect:/searchResults?name=" + name;
     }
-
+    
+    @PostMapping(value = "/sendFriendRequest")
+    public String sendFriendRequest(@ModelAttribute("user") User user) {
+    	friendRequestSvc.sendFriendRequest(user.getName());
+    	return "redirect:/";
+    }
 }

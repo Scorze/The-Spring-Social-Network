@@ -1,6 +1,5 @@
 package org.springcourse.project.springsocialnetwork.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.List;
 
@@ -8,7 +7,9 @@ import org.springcourse.project.springsocialnetwork.dao.UserRepository;
 import org.springcourse.project.springsocialnetwork.model.FriendRequest;
 import org.springcourse.project.springsocialnetwork.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FriendRequestServiceImpl implements FriendRequestService {
 
 	@Autowired
@@ -18,13 +19,14 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 	UserRepository userRepo;
 	
 	@Override
-	public void sendFriendRequest(User user) {
+	public void sendFriendRequest(String name) {
 		User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
+		User userToSendRequest = userRepo.findByName(name).get();
 		FriendRequest friendRequest = new FriendRequest();
 		friendRequest.setRequestFrom(loggedUSer);
-		friendRequest.setRequestTo(user);
-		user.getFriendRequests().add(friendRequest);
-		userRepo.save(user);
+		friendRequest.setRequestTo(userToSendRequest);
+		userToSendRequest.getFriendRequests().add(friendRequest);
+		userRepo.save(userToSendRequest);
 	}
 
 	@Override

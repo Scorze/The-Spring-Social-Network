@@ -29,7 +29,7 @@
     <![endif]-->
 </head>
 <nav class="navbar navbar-light bg-white">
-        <a href="#" class="navbar-brand">Bootsbook</a>
+        <a href="${contextPath }" class="navbar-brand">SpringBook</a>
         <form method="GET" action="${contextPath}/searchResults" class="form-signin">
             <div class="input-group">
                 <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" name="searchName"/>
@@ -52,22 +52,22 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <div class="h5">@LeeCross</div>
+                        <div class="h5">@${pageContext.request.userPrincipal.name}</div>
                         <div class="h7 text-muted">Welcome ${pageContext.request.userPrincipal.name}</div>
-                        <div class="h7">Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-                            etc.
-                        </div>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <div class="h6 text-muted">Followers</div>
+                            <div class="h6 text-muted">Friends</div>
                             <div class="h5">5.2342</div>
                         </li>
                         <li class="list-group-item">
-                            <div class="h6 text-muted">Following</div>
+                            <div class="h6 text-muted">Friend Requests</div>
                             <div class="h5">6758</div>
                         </li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li class="list-group-item">
+                            <div class="h6 text-muted">My Requests</div>
+                            <div class="h5">6758</div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -112,17 +112,7 @@
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-primary">share</button>
                             </div>
-                            <div class="btn-group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="fa fa-globe"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
-                                </div>
-                            </div>
+        
                         </div>
                     </div>
                 </div>
@@ -135,35 +125,16 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
-                                </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">${postItem.user.name}</div>
+                                    <div class="h5 m-0">@${postItem.user.name}</div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <div></div>
                         </div>
 
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                        </a>
-
                         <p class="card-text">
                             ${postItem.text}
                         </p>
@@ -171,7 +142,6 @@
                     <div class="card-footer">
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
                 </div>
                 </c:forEach>
