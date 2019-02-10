@@ -1,8 +1,11 @@
 package org.springcourse.project.springsocialnetwork.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -10,6 +13,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 
 @Entity(name="USERS")
 @Table(name="USERS")
@@ -76,7 +83,25 @@ public class User {
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    
+    @ManyToMany
+    @JoinTable(name="tbl_friends",
+     joinColumns=@JoinColumn(name="personId"),
+     inverseJoinColumns=@JoinColumn(name="friendId")
+    )
+    private List<User> friends;
 
+    @ManyToMany
+    @JoinTable(name="tbl_friends",
+     joinColumns=@JoinColumn(name="friendId"),
+     inverseJoinColumns=@JoinColumn(name="personId")
+    )
+    private List<User> friendOf;
+
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<FriendRequest> friendRequests;
+    
     public String getEmail() {
         return email;
     }
@@ -128,8 +153,20 @@ public class User {
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
+    
+    public List<User> getFriends() {
+		return friends;
+	}
 
-    @Override
+	public List<User> getFriendOf() {
+		return friendOf;
+	}
+	
+	public List<FriendRequest> getFriendRequests() {
+		return friendRequests;
+	}
+
+	@Override
     public String toString() {
         return "User [id=" + id + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
                 + ", email=" + email + ", name=" + name + ", role=" + role + "]";

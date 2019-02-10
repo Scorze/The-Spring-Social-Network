@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class JspController {
@@ -60,6 +61,13 @@ public class JspController {
 
         return "register";
     }
+    
+    @GetMapping(value = "/searchResults")
+    public String searchResults(@RequestParam("searchName") String name, Model model) {
+        model.addAttribute("searchFriendsResults", userService.findByNonFriends(name));
+
+        return "searchResults";
+    }
 
     @PostMapping(value = "/register")
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
@@ -83,6 +91,11 @@ public class JspController {
         postForm.setUser(user);
         service.createPost(postForm);
         return "redirect:/";
+    }
+    
+    @PostMapping(value = "/searchResults")
+    public String searchFriends(@RequestParam("searchName") String name) {
+    	return "redirect:/searchResults?name=" + name;
     }
 
 }

@@ -20,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+    
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public List<User> getUsers() {
@@ -69,5 +72,16 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+	@Override
+	public List<User> findByNonFriends(String name) {
+		List<User> allUsers = repository.findAll();
+		String loggedUserName = securityService.getLoggedInName();
+		User loggedUser = repository.findByName(loggedUserName).get();
+		List<User> loggedUserFriends = loggedUser.getFriends();
+		allUsers.removeAll(loggedUserFriends);
+		allUsers.remove(loggedUser);
+		return allUsers;
+	}
 
 }
