@@ -9,7 +9,7 @@ import org.springcourse.project.springsocialnetwork.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
-    public List<Post> findAll();
+    public List<Post> findAllByOrderByCreatedAtDesc();
     public Optional<Post> findByGroup(Group group);
     public Optional<Post> findByUser(User user);
 }

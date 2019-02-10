@@ -1,16 +1,21 @@
 package org.springcourse.project.springsocialnetwork.web;
 
+import org.springcourse.project.springsocialnetwork.model.Post;
 import org.springcourse.project.springsocialnetwork.model.User;
+import org.springcourse.project.springsocialnetwork.service.PostService;
 import org.springcourse.project.springsocialnetwork.service.SecurityService;
 import org.springcourse.project.springsocialnetwork.service.UserService;
 import org.springcourse.project.springsocialnetwork.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class JspController {
@@ -24,10 +29,15 @@ public class JspController {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    private PostService service;
+
 
     @GetMapping(value = {"/", "/index"})
-    public String welcome(Model model) {
+    public String index(Model model) {
         if (securityService.getLoggedInName() != null) {
+            model.addAttribute("postForm", new Post());
+            model.addAttribute("postFeed", service.getPosts());
             return "index";
         }
         return "login";
@@ -36,7 +46,7 @@ public class JspController {
     @GetMapping(value = "/login")
     public String login(Model model, String error, String logout) {
         if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Your username or password is invalid.");
 
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
@@ -63,6 +73,15 @@ public class JspController {
 
         securityService.login(userForm.getName(), userForm.getPasswordConfirm());
 
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/post")
+    public String createPost(@ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Model model) {
+        final String userName = securityService.getLoggedInName();
+        final User user = userService.findByName(userName);
+        postForm.setUser(user);
+        service.createPost(postForm);
         return "redirect:/";
     }
 
