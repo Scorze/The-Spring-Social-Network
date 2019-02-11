@@ -64,11 +64,15 @@
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friend Requests</div>
-                            <div class="h5">6758</div>
+                            <c:forEach items="${friendRequests}" var="friendRequest">
+                            	<div class="h5">${friendRequest.requestFrom.name}</div>
+                            </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">My Requests</div>
-                            <div class="h5">6758</div>
+                            <c:forEach items="${myRequests}" var="friendRequest">
+                            	<div class="h5">${friendRequest.requestTo.name}</div>
+                            </c:forEach>
                         </li>
                     </ul>
                 </div>
@@ -84,9 +88,9 @@
                                 <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
                                     a publication</a>
                             </li>
-                            <li class="nav-item">
+                           <!--  <li class="nav-item">
                                 <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
-                            </li>
+                            </li>--> 
                         </ul>
                     </div>
                     <div class="card-body">
@@ -100,7 +104,7 @@
                                 </div>
 
                             </div>
-                            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                            <!--  <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
                                 <div class="form-group">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="customFile">
@@ -108,7 +112,7 @@
                                     </div>
                                 </div>
                                 <div class="py-4"></div>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="btn-toolbar justify-content-between">
                             <div class="btn-group">
