@@ -102,8 +102,8 @@ public class JspController {
     }
     
     @PostMapping(value = "/sendFriendRequest")
-    public String sendFriendRequest(@ModelAttribute("user") User user) {
-    	friendRequestSvc.sendFriendRequest(user.getName());
+    public String sendFriendRequest(@RequestParam("user") String userName) {
+    	friendRequestSvc.sendFriendRequest(userName);
     	return "redirect:/";
     }
 }

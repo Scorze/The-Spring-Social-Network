@@ -17,7 +17,8 @@
     <title>Create an account</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    <link href="${contextPath}/resources/styles/styles.css" rel="stylesheet">
+    <link href="${contextPath}/resources/styles/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -30,8 +31,8 @@
 </head>
 <nav class="navbar navbar-light bg-white">
         <a href="${contextPath }" class="navbar-brand">SpringBook</a>
-        <form method="GET" action="${contextPath}/searchResults" class="form-signin">
-            <div class="input-group">
+        <form method="GET" action="${contextPath}/searchResults" class="search-bar">
+            <div class="input-group ">
                 <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" name="searchName"/>
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="submit" id="button-addon2">
@@ -74,8 +75,8 @@
             <div class="col-md-6 gedf-main">
 
                 <!--- \\\\\\\Post-->
-                <form:form method="POST" action="${contextPath}/post" class="form-signin" modelAttribute="postForm">
-                <div class="card gedf-card">
+                <form:form method="POST" action="${contextPath}/post" modelAttribute="postForm">
+                <div class="card gedf-card post-item">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -110,7 +111,7 @@
                         </div>
                         <div class="btn-toolbar justify-content-between">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-primary">share</button>
+                                <button type="submit" class="btn btn-primary">Post</button>
                             </div>
         
                         </div>
@@ -121,7 +122,7 @@
 
                 <!--- \\\\\\\Post-->
                 <c:forEach items="${postFeed}" var="postItem">
-                <div class="card gedf-card">
+                <div class="card gedf-card post-item">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -140,8 +141,8 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-gittip"></i> Like</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-comment"></i> Comment</button>
                     </div>
                 </div>
                 </c:forEach>
