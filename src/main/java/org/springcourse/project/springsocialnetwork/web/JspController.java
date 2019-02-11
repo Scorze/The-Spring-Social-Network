@@ -2,6 +2,7 @@ package org.springcourse.project.springsocialnetwork.web;
 
 import java.util.Map;
 
+import org.springcourse.project.springsocialnetwork.model.Comment;
 import org.springcourse.project.springsocialnetwork.model.Post;
 import org.springcourse.project.springsocialnetwork.model.User;
 import org.springcourse.project.springsocialnetwork.service.FriendRequestService;
@@ -96,6 +97,15 @@ public class JspController {
         service.createPost(postForm);
         return "redirect:/";
     }
+    /*
+    @PostMapping(value="/comment")
+    public String createComment(@ModelAttribute("commentForm") Comment comment, BindingResult bindingReuslt, Model model) {
+    	final String userName = securityService.getLoggedInName();
+        final User user = userService.findByName(userName);
+        final Post post = service.ge
+        comment.setPost(post);
+    }
+    */
     
     @PostMapping(value = "/searchResults")
     public String searchFriends(@RequestParam("searchName") String name) {

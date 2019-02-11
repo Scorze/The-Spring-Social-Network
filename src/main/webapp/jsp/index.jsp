@@ -147,11 +147,45 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-gittip"></i> Like</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-comment"></i> Comment</button>
+                        <button class="btn btn-primary" onclick="openForm(${postItem.id})"><i class="fa fa-comment"></i> Comment</button>
+                        <div class="card-body" style="display: none;" id="${postItem.id }">
+                        <form:form method="POST" action="${contextPath}/comment" modelAttribute="commentForm" id="${postItem.id}_form">
+	                        <div class="tab-content" id="myTabContent">
+	                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+	                                <div class="form-group">
+	                                    <label class="sr-only" for="message">post</label>
+	                                    <spring:bind path="text">
+	                                    	<form:textarea class="form-control" id="message" rows="3" 
+	                                    				placeholder="Comment..." type="text" path="text"></form:textarea>
+	                                    </spring:bind>
+	                                    <spring:bind path="post">
+	                                    	<form:input type="hidden" value="${postItem}" />
+	                                    </spring:bind>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <button type="submit" class="btn btn-primary">Apply Comment</button>
+	                           
+                        </form:form>
+                        <button class="btn btn-primary" onclick="closeForm(${postItem.id })">Cancel</button>
+                    </div>
                     </div>
                 </div>
+                
+                
                 </c:forEach>
                 <!-- Post /////-->
         </div>
     </div>
+ 	<script>
+		function openForm(element) {
+		  document.getElementById(element).style.display = "block";
+		}
+		
+		function closeForm(element) {
+		  document.getElementById(element).style.display = "none";
+		  document.getElementById(element + "_form").reset();
+		}
+	</script>
+ 	
 </html>
