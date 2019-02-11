@@ -39,7 +39,9 @@ public class JspController {
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
         if (securityService.getLoggedInName() != null) {
-            model.addAttribute("friendRequests", friendRequestSvc.getAllFriendRequestsTo());
+            final User user = userService.getLoggedUser();
+            model.addAttribute("friends", user.getFriends());
+            model.addAttribute("friendRequests", user.getFriendRequests());
             model.addAttribute("myRequests", friendRequestSvc.getAllFriendRequestsFrom());
             model.addAttribute("postForm", new Post());
             model.addAttribute("postFeed", service.getPosts());
@@ -90,8 +92,7 @@ public class JspController {
 
     @PostMapping(value = "/post")
     public String createPost(@ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Model model) {
-        final String userName = securityService.getLoggedInName();
-        final User user = userService.findByName(userName);
+        final User user = userService.getLoggedUser();
         postForm.setUser(user);
         service.createPost(postForm);
         return "redirect:/";

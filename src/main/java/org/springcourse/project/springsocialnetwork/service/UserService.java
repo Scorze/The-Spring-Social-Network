@@ -10,6 +10,8 @@ public interface UserService {
 
     public User findByName(final String name);
     
+    public User getLoggedUser();
+    
     public List<User> findByNonFriends(final String name);
     
     public User createUser(final User user);

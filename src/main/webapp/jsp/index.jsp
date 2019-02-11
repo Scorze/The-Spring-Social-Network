@@ -60,7 +60,9 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friends</div>
-                            <div class="h5">5.2342</div>
+                            <c:forEach items="${friends}" var="friend">
+                            	<div class="h5">${friend.name}</div>
+                            </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friend Requests</div>

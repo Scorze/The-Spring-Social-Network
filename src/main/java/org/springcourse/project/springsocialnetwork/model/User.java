@@ -99,9 +99,9 @@ public class User {
     private List<User> friendOf;
 
     
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendRequest> friendRequests;
-    
+
     public String getEmail() {
         return email;
     }

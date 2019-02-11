@@ -81,8 +81,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findByNonFriends(String name) {
 		List<User> allUsers = repository.findByNameContaining(name);
-		String loggedUserName = securityService.getLoggedInName();
-		User loggedUser = repository.findByName(loggedUserName).get();
+		User loggedUser = getLoggedUser();
 		List<User> loggedUserFriends = loggedUser.getFriends();
 		List<FriendRequest> allSendFriendRequest = friendRequestRepo.findByRequestFrom(loggedUser);
 		for (FriendRequest fr : allSendFriendRequest) {
@@ -92,5 +91,11 @@ public class UserServiceImpl implements UserService {
 		allUsers.remove(loggedUser);
 		return allUsers;
 	}
+
+    @Override
+    public User getLoggedUser() {
+        final String userName = securityService.getLoggedInName();
+        return findByName(userName);
+    }
 
 }
