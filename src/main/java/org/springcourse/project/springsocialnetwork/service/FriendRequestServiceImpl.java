@@ -3,6 +3,7 @@ package org.springcourse.project.springsocialnetwork.service;
 
 import java.util.List;
 
+import org.springcourse.project.springsocialnetwork.dao.FriendRequestRepository;
 import org.springcourse.project.springsocialnetwork.dao.UserRepository;
 import org.springcourse.project.springsocialnetwork.model.FriendRequest;
 import org.springcourse.project.springsocialnetwork.model.User;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Service;
 public class FriendRequestServiceImpl implements FriendRequestService {
 
 	@Autowired
-	SecurityService securityService;
+	private SecurityService securityService;
 	
 	@Autowired
-	UserRepository userRepo;
+	private UserRepository userRepo;
+	
+    @Autowired
+    private FriendRequestRepository friendRequestRepo;
 	
 	@Override
 	public void sendFriendRequest(String name) {
@@ -30,9 +34,15 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 	}
 
 	@Override
-	public List<FriendRequest> getAllFriendRequest() {
+	public List<FriendRequest> getAllFriendRequestsTo() {
 		User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
 		return loggedUSer.getFriendRequests();
 	}
+
+    @Override
+    public List<FriendRequest> getAllFriendRequestsFrom() {
+        User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
+        return friendRequestRepo.findByRequestFrom(loggedUSer);
+    }
 
 }

@@ -5,9 +5,11 @@ import java.util.List;
 import org.springcourse.project.springsocialnetwork.model.FriendRequest;
 
 public interface FriendRequestService {
-	
+
 	public void sendFriendRequest(String name);
-    
-    public List<FriendRequest> getAllFriendRequest();
+
+    public List<FriendRequest> getAllFriendRequestsTo();
+
+    public List<FriendRequest> getAllFriendRequestsFrom();
 	
 }
