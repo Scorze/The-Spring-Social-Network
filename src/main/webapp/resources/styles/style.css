@@ -49,3 +49,20 @@
   margin: 0 auto;
   width: 30%;
 }
+
+.request-button {
+	float: right;
+	line-height: 1;
+}
+
+.request-title {
+	float:left;
+	text-align:left;
+	vertical-align:center;
+}
+
+.flex-box {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}

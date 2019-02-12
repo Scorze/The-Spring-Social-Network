@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springcourse.project.springsocialnetwork.dao.CommentRepository;
 import org.springcourse.project.springsocialnetwork.dao.PostRepository;
+import org.springcourse.project.springsocialnetwork.dao.UserRepository;
 import org.springcourse.project.springsocialnetwork.exception.EntityNotFoundException;
 import org.springcourse.project.springsocialnetwork.model.Comment;
 import org.springcourse.project.springsocialnetwork.model.Post;
+import org.springcourse.project.springsocialnetwork.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository repository;
+    
+    @Autowired
+    private SecurityService securityService;
 
     @Autowired
-    private PostRepository postRepository;
+    private UserRepository userRepo;
 
     @Override
     public List<Comment> getComments() {
@@ -26,12 +31,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(Comment comment, final long postId) {
-        Optional<Post> post = postRepository.findById(postId);
-        if (!post.isPresent()) {
-            throw new EntityNotFoundException(String.format("Post with id '%d' doesn't exist.", postId));
-        }
-        comment.setPost(post.get());
+    public Comment createComment(Comment comment) {
+        User user = userRepo.findByName(securityService.getLoggedInName()).get();
+        comment.setUser(user);
         return repository.save(comment);
     }
 

@@ -29,11 +29,11 @@ public class CommentController {
         return service.getComments();
     }
 
-    @PostMapping("{postId}")
+    /*@PostMapping("{postId}")
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable("postId") final Long postId) {
         final Comment createdComment = service.createComment(comment, postId);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
-    }
+    }*/
 
     @PutMapping("{id}")
     public ResponseEntity<Comment> updateComment(@RequestBody Comment comment, @PathVariable("id") final Long id) {

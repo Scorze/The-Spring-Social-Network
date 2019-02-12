@@ -8,6 +8,8 @@ public interface PostService {
 
     public List<Post> getPosts();
 
+    public List<Post> getFeed();
+
     public Post createPost(final Post post);
 
     public Post createPostInGroup(final Post post, final long groupId);

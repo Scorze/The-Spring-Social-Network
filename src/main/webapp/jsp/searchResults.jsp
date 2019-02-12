@@ -31,7 +31,7 @@
     <![endif]-->
 </head>
 <nav class="navbar navbar-light bg-white">
-        <a href="${contextPath }" class="navbar-brand">SpringBook</a>
+        <a href="./" class="navbar-brand">SpringBook</a>
         <form method="GET" action="${contextPath}/searchResults" class="search-bar">
             <div class="input-group ">
                 <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" name="searchName"/>
@@ -60,19 +60,45 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friends</div>
-                            <div class="h5">5.2342</div>
+                            <c:forEach items="${friends}" var="friend">
+                            	<div class="h5">@${friend.name}</div>
+                            </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friend Requests</div>
-                            <div class="h5">6758</div>
+                            <c:forEach items="${friendRequests}" var="friendRequest">
+                                <div class="flex-box">
+	                            	<div class="h5" class="request-title">@${friendRequest.requestFrom.name}</div>
+	                           		<form method="POST" action="${contextPath}/acceptFriendRequest">
+										<input type="hidden" value="${friendRequest.requestFrom.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Accept request</button>
+				                    </form>
+				                    <form method="POST" action="${contextPath}/declineFriendRequest">
+										<input type="hidden" value="${friendRequest.requestFrom.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Decline request</button>
+				                    </form>
+			                    </div>
+                            </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">My Requests</div>
-                            <div class="h5">6758</div>
+                            <c:forEach items="${myRequests}" var="friendRequest">
+                            	<div class="flex-box">
+	                            	<div class="h5" class="request-title">@${friendRequest.requestTo.name}</div>
+	                           		<form method="POST" action="${contextPath}/cancelFriendRequest">
+										<input type="hidden" value="${friendRequest.requestTo.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Cancel request</button>
+				                    </form>
+			                    </div>
+                            </c:forEach>
                         </li>
                     </ul>
                 </div>
             </div>
+            
             <div class="col-md-6 gedf-main">
 				<c:forEach items="${searchFriendsResults}" var="result">
 				<div class="card gedf-card post-item" style="border: 0px;">

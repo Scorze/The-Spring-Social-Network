@@ -30,13 +30,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 		Optional<FriendRequest> friendRequestFromOtherUser = friendRequestRepo.findByRequestFromAndRequestTo(userToSendRequest, loggedUSer);
 		if (friendRequestFromOtherUser.isPresent()) {
 		    FriendRequest friendRequestFromOtherUserEntity = friendRequestFromOtherUser.get();
-		    loggedUSer.getFriends().add(userToSendRequest);
-		    userToSendRequest.getFriends().add(loggedUSer);
-		    loggedUSer.getFriendRequests().remove(friendRequestFromOtherUserEntity);
-		    friendRequestFromOtherUserEntity.setRequestFrom(null);
-		    friendRequestFromOtherUserEntity.setRequestTo(null);
-		    userRepo.save(loggedUSer);
-		    userRepo.save(userToSendRequest);
+		    addFriend(userToSendRequest, loggedUSer, friendRequestFromOtherUserEntity);
 		    return;
 		}
 		FriendRequest friendRequest = new FriendRequest();
@@ -58,4 +52,46 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         return friendRequestRepo.findByRequestFrom(loggedUSer);
     }
 
+    @Override
+    public void acceptFriendRequest(String name) {
+        User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
+        User userToSendRequest = userRepo.findByName(name).get();
+        Optional<FriendRequest> friendRequestFromOtherUser = friendRequestRepo.findByRequestFromAndRequestTo(userToSendRequest, loggedUSer);
+        if (friendRequestFromOtherUser.isPresent()) {
+            FriendRequest friendRequestFromOtherUserEntity = friendRequestFromOtherUser.get();
+            addFriend(userToSendRequest, loggedUSer, friendRequestFromOtherUserEntity);
+        }
+    }
+
+    @Override
+    public void declineFriendRequest(String name) {
+        User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
+        User userToSendRequest = userRepo.findByName(name).get();
+        Optional<FriendRequest> friendRequestFromOtherUser = friendRequestRepo.findByRequestFromAndRequestTo(userToSendRequest, loggedUSer);
+        removeRequest(loggedUSer, friendRequestFromOtherUser.get());
+        userRepo.save(loggedUSer);
+    }
+
+    @Override
+    public void cancelFriendRequest(String name) {
+        User loggedUSer = userRepo.findByName(securityService.getLoggedInName()).get();
+        User userToSendRequest = userRepo.findByName(name).get();
+        Optional<FriendRequest> friendRequestFromOtherUser = friendRequestRepo.findByRequestFromAndRequestTo(loggedUSer, userToSendRequest);
+        removeRequest(userToSendRequest, friendRequestFromOtherUser.get());
+        userRepo.save(userToSendRequest);
+    }
+
+    private void addFriend(User userToSendRequest, User loggedUSer, FriendRequest friendRequestFromOtherUserEntity) {
+        userToSendRequest.getFriends().add(loggedUSer);
+        loggedUSer.getFriends().add(userToSendRequest);
+        removeRequest(loggedUSer, friendRequestFromOtherUserEntity);
+        userRepo.save(loggedUSer);
+        userRepo.save(userToSendRequest);
+    }
+    
+    private void removeRequest(User user, FriendRequest friendRequestFromOtherUserEntity) {
+        user.getFriendRequests().remove(friendRequestFromOtherUserEntity);
+        friendRequestFromOtherUserEntity.setRequestFrom(null);
+        friendRequestFromOtherUserEntity.setRequestTo(null);
+    }
 }

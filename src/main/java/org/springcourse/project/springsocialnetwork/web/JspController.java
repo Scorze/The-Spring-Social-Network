@@ -1,10 +1,13 @@
 package org.springcourse.project.springsocialnetwork.web;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springcourse.project.springsocialnetwork.model.Comment;
 import org.springcourse.project.springsocialnetwork.model.Post;
 import org.springcourse.project.springsocialnetwork.model.User;
+import org.springcourse.project.springsocialnetwork.service.CommentService;
 import org.springcourse.project.springsocialnetwork.service.FriendRequestService;
 import org.springcourse.project.springsocialnetwork.service.PostService;
 import org.springcourse.project.springsocialnetwork.service.SecurityService;
@@ -36,6 +39,9 @@ public class JspController {
     
     @Autowired
     private FriendRequestService friendRequestSvc;
+    
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
@@ -45,7 +51,13 @@ public class JspController {
             model.addAttribute("friendRequests", user.getFriendRequests());
             model.addAttribute("myRequests", friendRequestSvc.getAllFriendRequestsFrom());
             model.addAttribute("postForm", new Post());
-            model.addAttribute("postFeed", service.getPosts());
+            List<Post> feed = service.getFeed();
+            List<Comment> addComments = new ArrayList<>();
+            for (int i = 0; i < feed.size(); i++) {
+                addComments.add(new Comment());
+            }
+            model.addAttribute("postFeed", feed);
+            model.addAttribute("commentForm", addComments);
             return "index";
         }
         return "login";
@@ -71,6 +83,10 @@ public class JspController {
     
     @GetMapping(value = "/searchResults")
     public String searchResults(@RequestParam("searchName") String name, Model model) {
+        final User user = userService.getLoggedUser();
+        model.addAttribute("friends", user.getFriends());
+        model.addAttribute("friendRequests", user.getFriendRequests());
+        model.addAttribute("myRequests", friendRequestSvc.getAllFriendRequestsFrom());
         model.addAttribute("searchFriendsResults", userService.findByNonFriends(name));
 
         return "searchResults";
@@ -98,24 +114,39 @@ public class JspController {
         service.createPost(postForm);
         return "redirect:/";
     }
-    /*
+
     @PostMapping(value="/comment")
     public String createComment(@ModelAttribute("commentForm") Comment comment, BindingResult bindingReuslt, Model model) {
-    	final String userName = securityService.getLoggedInName();
-        final User user = userService.findByName(userName);
-        final Post post = service.ge
-        comment.setPost(post);
+        commentService.createComment(comment);
+        return "redirect:/";
     }
-    */
-    
+
     @PostMapping(value = "/searchResults")
     public String searchFriends(@RequestParam("searchName") String name) {
     	return "redirect:/searchResults?name=" + name;
     }
-    
+
     @PostMapping(value = "/sendFriendRequest")
     public String sendFriendRequest(@RequestParam("user") String userName) {
     	friendRequestSvc.sendFriendRequest(userName);
     	return "redirect:/";
+    }
+
+    @PostMapping(value = "/acceptFriendRequest")
+    public String acceptFriendRequest(@RequestParam("user") String userName) {
+        friendRequestSvc.acceptFriendRequest(userName);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/declineFriendRequest")
+    public String declineFriendRequest(@RequestParam("user") String userName) {
+        friendRequestSvc.declineFriendRequest(userName);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/cancelFriendRequest")
+    public String cancelFriendRequest(@RequestParam("user") String userName) {
+        friendRequestSvc.cancelFriendRequest(userName);
+        return "redirect:/";
     }
 }

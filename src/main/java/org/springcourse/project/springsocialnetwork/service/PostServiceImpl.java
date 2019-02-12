@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springcourse.project.springsocialnetwork.dao.GroupRepository;
 import org.springcourse.project.springsocialnetwork.dao.PostRepository;
+import org.springcourse.project.springsocialnetwork.dao.UserRepository;
 import org.springcourse.project.springsocialnetwork.exception.EntityNotFoundException;
 import org.springcourse.project.springsocialnetwork.model.Group;
 import org.springcourse.project.springsocialnetwork.model.Post;
+import org.springcourse.project.springsocialnetwork.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,12 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private SecurityService securityService;
+    
+    @Autowired
+    private UserRepository userRepo;
 
     @Override
     public List<Post> getPosts() {
@@ -59,6 +67,16 @@ public class PostServiceImpl implements PostService {
         }
         Post existingPost = existing.get();
         repository.delete(existingPost);
+    }
+
+    @Override
+    public List<Post> getFeed() {
+        User user = userRepo.findByName(securityService.getLoggedInName()).get();
+        List<User> friends = user.getFriends();
+        if (friends.isEmpty()) {
+            return repository.findAllByUserOrderByUpdatedAtDesc(user);
+        }
+        return repository.findAllPostsFromUserAndFriends(user, friends);
     }
 
 }

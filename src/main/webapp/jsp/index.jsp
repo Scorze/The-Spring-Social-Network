@@ -61,19 +61,38 @@
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friends</div>
                             <c:forEach items="${friends}" var="friend">
-                            	<div class="h5">${friend.name}</div>
+                            	<div class="h5">@${friend.name}</div>
                             </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">Friend Requests</div>
                             <c:forEach items="${friendRequests}" var="friendRequest">
-                            	<div class="h5">${friendRequest.requestFrom.name}</div>
+                                <div class="flex-box">
+	                            	<div class="h5" class="request-title">@${friendRequest.requestFrom.name}</div>
+	                           		<form method="POST" action="${contextPath}/acceptFriendRequest">
+										<input type="hidden" value="${friendRequest.requestFrom.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Accept request</button>
+				                    </form>
+				                    <form method="POST" action="${contextPath}/declineFriendRequest">
+										<input type="hidden" value="${friendRequest.requestFrom.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Decline request</button>
+				                    </form>
+			                    </div>
                             </c:forEach>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">My Requests</div>
                             <c:forEach items="${myRequests}" var="friendRequest">
-                            	<div class="h5">${friendRequest.requestTo.name}</div>
+                            	<div class="flex-box">
+	                            	<div class="h5" class="request-title">@${friendRequest.requestTo.name}</div>
+	                           		<form method="POST" action="${contextPath}/cancelFriendRequest">
+										<input type="hidden" value="${friendRequest.requestTo.name}" name="user">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<button type="submit" class="btn btn-primary request-button">Cancel request</button>
+				                    </form>
+			                    </div>
                             </c:forEach>
                         </li>
                     </ul>
@@ -161,33 +180,30 @@
 	                                    				placeholder="Comment..." type="text" path="text"></form:textarea>
 	                                    </spring:bind>
 	                                    <spring:bind path="post">
-	                                    	<form:input type="hidden" value="${postItem}" />
+	                                    	<form:input type="hidden" value="${postItem}" path="post"/>
 	                                    </spring:bind>
 	                                </div>
 	                            </div>
 	                        </div>
 	                        <button type="submit" class="btn btn-primary">Apply Comment</button>
-	                           
+
                         </form:form>
                         <button class="btn btn-primary" onclick="closeForm(${postItem.id })">Cancel</button>
                     </div>
                     </div>
                 </div>
-                
-                
                 </c:forEach>
                 <!-- Post /////-->
         </div>
     </div>
- 	<script>
-		function openForm(element) {
-		  document.getElementById(element).style.display = "block";
-		}
-		
-		function closeForm(element) {
-		  document.getElementById(element).style.display = "none";
-		  document.getElementById(element + "_form").reset();
-		}
-	</script>
- 	
+     	<script>
+				function openForm(element) {
+				  document.getElementById(element).style.display = "block";
+				}
+				
+				function closeForm(element) {
+				  document.getElementById(element).style.display = "none";
+				  document.getElementById(element + "_form").reset();
+				}
+		</script>
 </html>

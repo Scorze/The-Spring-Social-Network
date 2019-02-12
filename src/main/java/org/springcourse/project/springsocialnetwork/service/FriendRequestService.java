@@ -8,6 +8,12 @@ public interface FriendRequestService {
 
 	public void sendFriendRequest(String name);
 
+	public void acceptFriendRequest(String name);
+
+	public void declineFriendRequest(String name);
+
+	public void cancelFriendRequest(String name);
+
     public List<FriendRequest> getAllFriendRequestsTo();
 
     public List<FriendRequest> getAllFriendRequestsFrom();
