@@ -18,12 +18,15 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository repository;
-    
-    @Autowired
-    private SecurityService securityService;
 
     @Autowired
-    private UserRepository userRepo;
+    private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public List<Comment> getComments() {
@@ -31,8 +34,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(Comment comment) {
-        User user = userRepo.findByName(securityService.getLoggedInName()).get();
+    public Comment createComment(String text, final long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (!post.isPresent()) {
+            throw new EntityNotFoundException(String.format("Post with id '%d' doesn't exist.", postId));
+        }
+        Comment comment = new Comment();
+        comment.setText(text);
+        comment.setPost(post.get());
+        User user = userRepository.findByName(securityService.getLoggedInName()).get();
         comment.setUser(user);
         return repository.save(comment);
     }

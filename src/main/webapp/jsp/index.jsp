@@ -147,7 +147,7 @@
                 <!-- Post /////-->
 
                 <!--- \\\\\\\Post-->
-                <c:forEach items="${postFeed}" var="postItem">
+                <c:forEach items="${postFeed}" var="postItem" varStatus="status">
                 <div class="card gedf-card post-item">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
@@ -170,7 +170,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa fa-gittip"></i> Like</button>
                         <button class="btn btn-primary" onclick="openForm(${postItem.id})"><i class="fa fa-comment"></i> Comment</button>
                         <div class="card-body" style="display: none;" id="${postItem.id }">
-                        <form:form method="POST" action="${contextPath}/comment" modelAttribute="commentForm" id="${postItem.id}_form">
+                        <form:form method="POST" action="${contextPath}/comment" modelAttribute="commentForm_${status.index}" id="${postItem.id}_form">
 	                        <div class="tab-content" id="myTabContent">
 	                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
 	                                <div class="form-group">
@@ -179,13 +179,13 @@
 	                                    	<form:textarea class="form-control" id="message" rows="3" 
 	                                    				placeholder="Comment..." type="text" path="text"></form:textarea>
 	                                    </spring:bind>
-	                                    <spring:bind path="post">
-	                                    	<form:input type="hidden" value="${postItem}" path="post"/>
+	                                    <spring:bind path="postId">
+	                                    	<form:input type="hidden" value="${postItem.id}" path="postId"/>
 	                                    </spring:bind>
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <button type="submit" class="btn btn-primary">Apply Comment</button>
+	                        <button type="submit" class="btn btn-primary">Add Comment</button>
 
                         </form:form>
                         <button class="btn btn-primary" onclick="closeForm(${postItem.id })">Cancel</button>

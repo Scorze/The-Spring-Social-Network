@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springcourse.project.springsocialnetwork.dto.CommentDTO;
 import org.springcourse.project.springsocialnetwork.model.Comment;
 import org.springcourse.project.springsocialnetwork.model.Post;
 import org.springcourse.project.springsocialnetwork.model.User;
@@ -52,12 +53,13 @@ public class JspController {
             model.addAttribute("myRequests", friendRequestSvc.getAllFriendRequestsFrom());
             model.addAttribute("postForm", new Post());
             List<Post> feed = service.getFeed();
-            List<Comment> addComments = new ArrayList<>();
+            List<CommentDTO> addComments = new ArrayList<>();
             for (int i = 0; i < feed.size(); i++) {
-                addComments.add(new Comment());
+                addComments.add(new CommentDTO());
+                model.addAttribute("commentForm_" + i, addComments.get(i));
             }
             model.addAttribute("postFeed", feed);
-            model.addAttribute("commentForm", addComments);
+            
             return "index";
         }
         return "login";
@@ -116,8 +118,8 @@ public class JspController {
     }
 
     @PostMapping(value="/comment")
-    public String createComment(@ModelAttribute("commentForm") Comment comment, BindingResult bindingReuslt, Model model) {
-        commentService.createComment(comment);
+    public String createComment(@ModelAttribute("commentForm") CommentDTO commentDTO, BindingResult bindingReuslt, Model model) {
+        commentService.createComment(commentDTO.getText(), commentDTO.getPostId());
         return "redirect:/";
     }
 

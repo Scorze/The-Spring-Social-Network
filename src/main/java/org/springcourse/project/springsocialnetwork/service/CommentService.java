@@ -8,7 +8,7 @@ public interface CommentService {
 
     public List<Comment> getComments();
 
-    public Comment createComment(final Comment comment);
+    public Comment createComment(final String text, final long postId);
 
     public Comment updateComment(Comment comment, final long id);
 

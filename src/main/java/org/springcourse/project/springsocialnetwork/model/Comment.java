@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @Table(name="COMMENTS")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(
-        value = {"id", "createdAt", "updatedAt", "user", "post"}
+        value = {"id", "createdAt", "updatedAt", "user"}
 )
 public class Comment {
 
