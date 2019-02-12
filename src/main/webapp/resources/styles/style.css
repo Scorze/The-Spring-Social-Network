@@ -52,7 +52,9 @@
 
 .request-button {
 	float: right;
-	line-height: 1;
+	height: 40px;
+	margin-right: 1%;
+	margin-left: 1%;
 }
 
 .request-title {
@@ -65,4 +67,8 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
+}
+
+.add-comment-button {
+	margin-bottom: 1%;
 }

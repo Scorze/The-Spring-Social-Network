@@ -45,7 +45,7 @@
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-        <button class="btn btn-info" onclick="document.forms['logoutForm'].submit()">Logout</button>
+        <button class="btn btn-primary" onclick="document.forms['logoutForm'].submit()">Logout</button>
     </nav>
 
 
