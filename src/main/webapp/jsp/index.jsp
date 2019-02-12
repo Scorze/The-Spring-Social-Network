@@ -124,16 +124,7 @@
                                     </spring:bind>
                                 </div>
 
-                            </div>
-                            <!--  <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                                <div class="form-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Upload image</label>
-                                    </div>
-                                </div>
-                                <div class="py-4"></div>
-                            </div>-->
+                            </div> 
                         </div>
                         <div class="btn-toolbar justify-content-between">
                             <div class="btn-group">
@@ -167,7 +158,6 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-gittip"></i> Like</button>
                         <button class="btn btn-primary" onclick="openForm(${postItem.id})"><i class="fa fa-comment"></i> Comment</button>
                         <div class="card-body" style="display: none;" id="${postItem.id }">
                         <form:form method="POST" action="${contextPath}/comment" modelAttribute="commentForm_${status.index}" id="${postItem.id}_form">
@@ -192,7 +182,13 @@
                     </div>
                     </div>
                     <c:forEach items="${postItem.comments}" var="comment">
-                    <p>${comment.text}</p>
+                    <div class="card" style="width: 100%; padding-left:10%;">
+  						<div class="card-body">
+    					<h6 class="card-title">@${comment.user.name}</h6>
+    					<div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i><fmt:formatDate value="${comment.createdAt}" pattern="dd.MM.yy, HH:mm" /></div>
+    					<p class="card-text">${comment.text}</p>
+				  		</div>
+						</div>
                     </c:forEach>
                 </div>
                 </c:forEach>
