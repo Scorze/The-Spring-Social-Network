@@ -40,12 +40,12 @@ public class UserValidator implements Validator {
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {  
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);  
             Matcher matcher = pattern.matcher(user.getEmail());  
-            if (!matcher.matches()) {  
+            if (!matcher.matches()) {
                 errors.rejectValue("email", "Corr.userForm.email");  
             }  
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 128) {
             errors.rejectValue("password", "Size.userForm.password");
         }
 

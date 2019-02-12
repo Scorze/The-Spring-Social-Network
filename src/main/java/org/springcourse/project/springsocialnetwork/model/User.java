@@ -66,7 +66,7 @@ public class User {
     @NotEmpty(message = EMPTY_EMAIL)
     private String email;
 
-    @Column(name="NAME", nullable=false, unique=false, length=128)
+    @Column(name="NAME", nullable=false, unique=true, length=128)
     @NotEmpty(message = EMPTY_NAME)
     private String name;
 
