@@ -191,6 +191,9 @@
                         <button class="btn btn-primary" onclick="closeForm(${postItem.id })">Cancel</button>
                     </div>
                     </div>
+                    <c:forEach items="${postItem.comments}" var="comment">
+                    <p>${comment.text}</p>
+                    </c:forEach>
                 </div>
                 </c:forEach>
                 <!-- Post /////-->
