@@ -64,6 +64,11 @@ public class JspController {
         }
         return "login";
     }
+    
+    @GetMapping(value = "/client")
+    public String client(Model model) {
+        return "client";
+    }
 
     @GetMapping(value = "/login")
     public String login(Model model, String error, String logout) {

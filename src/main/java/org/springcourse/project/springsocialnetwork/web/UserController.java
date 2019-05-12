@@ -1,5 +1,6 @@
 package org.springcourse.project.springsocialnetwork.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springcourse.project.springsocialnetwork.exception.DuplicateUserException;
@@ -28,6 +29,17 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         return service.getUsers();
+    }
+    
+    @GetMapping("/friends")
+    public List<String> getUserFriends() {
+        final User user = service.getLoggedUser();
+        final List<User> friends = user.getFriends();
+        final List<String> friendNames = new ArrayList<>();
+        for (User friend: friends) {
+            friendNames.add(friend.getName());
+        }
+        return friendNames;
     }
 
     @PostMapping
