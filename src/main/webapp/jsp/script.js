@@ -13,7 +13,7 @@ if (!code) {
             success: function (result) {
             	var token = result.access_token;
 	            $.ajax({
-	                  url: "api/v1/users/friends",
+	                  url: "localhost:8080/api/v1/users/friends",
 	                  type: 'GET',
 	                  headers: {
 	                      'Authorization': 'Bearer ' + token
